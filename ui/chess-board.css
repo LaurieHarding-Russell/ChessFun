@@ -1,0 +1,57 @@
+* {
+    --default-white: #ffffff;
+    --default-black: #000000;
+    --default-square-size: 5rem;
+    --default-border-colour: #2c2000;
+
+    color: transparent;
+}
+
+.board {
+    border: 1rem solid;
+    border-color: var(--border-colour, var(--default-border-colour));
+    width: fit-content;
+}
+
+.row {
+    display: flex;
+    margin:0;
+    padding: 0;
+    border: none;
+}
+
+.black, .white {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: var(--square-size, var(--default-square-size));
+    height: var(--square-size, var(--default-square-size));
+    margin:0;
+    padding: 0;
+    border: none;
+
+    img {
+        width: 80%;
+        margin: auto;
+        display: block;
+    }
+} 
+
+.white {
+    background: var(--white, var(--default-white))
+}
+
+.black {
+    background: var(--black, var(--default-black))
+}
+
+
+/* FIXME, there must be a better to change an svg images colour */
+span[data-side="white"] img {
+    
+}
+
+span[data-side="black"] img {
+    filter: invert(1);
+}
