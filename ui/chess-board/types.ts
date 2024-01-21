@@ -1,10 +1,10 @@
 export enum PieceType {
-    POND,
-    ROOK,
-    KNIGHT,
-    BISHOP,
-    QUEEN,
-    KING
+    POND = 'POND',
+    ROOK = 'ROOK',
+    KNIGHT = 'KNIGHT',
+    BISHOP = 'BISHOP',
+    QUEEN = 'QUEEN',
+    KING = 'KING'
 }
 
 export enum Side {
@@ -29,4 +29,6 @@ export interface ChessMove {
     fromY: number;
     toX: number;
     toY: number;
+    fromPeice: Piece | null;
+    toPeice: Piece | null;
 }

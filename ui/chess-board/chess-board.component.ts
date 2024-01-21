@@ -2,9 +2,12 @@ import { generatePiecesFromString } from "./chess.util";
 import { Piece, PieceType, Side, ChessMove } from "./types";
 
 export class ChessBoard extends HTMLElement {
-    board: Array<Array<Piece|null>> = [];
+    private board: Array<Array<Piece|null>> = [];
+    private moves: Array<ChessMove> = [];
+    private host: HTMLDivElement = document.createElement('div');
 
-    host = document.createElement('div');
+    public moveNumber: number = 0;
+    public currentMove: number = 0;
 
     constructor() {
         super();
@@ -19,7 +22,58 @@ export class ChessBoard extends HTMLElement {
         this.renderBoard(); // FIXME, think about what should call this.
     }
 
-    renderBoard() {
+    public back(): void {
+        if (this.currentMove < 1) {
+            return;
+        }
+        this.currentMove = this.currentMove - 1;
+        let move = this.moves[this.currentMove];
+        this.board[move.toY][move.toX] = move.toPeice;
+        this.board[move.fromY][move.fromX] = move.fromPeice;
+        this.renderBoard();
+    }
+
+    public forward(): void {
+        if (this.currentMove == this.moveNumber) {
+            return;
+        }
+        let move = this.moves[this.currentMove];
+        this.moveForward(move);
+        this.renderBoard();
+    }
+
+    public makeMove(move: ChessMove): void {
+        if (this.isValidMove()) {
+            this.moveForward(move);
+            this.moveNumber = this.currentMove;
+        }
+        this.renderBoard();
+    }
+
+    public loadPgn(): void {
+        throw "unimplemented";
+    }
+
+    public exportPgn(): void {
+        throw "unimplemented";
+    }
+
+    public loadFEN(): void {
+        throw "unimplemented";
+    }
+
+    public exportFEN(): void {
+        throw "unimplemented";
+    }
+
+    private moveForward(move: ChessMove) {
+        this.board[move.toY][move.toX] = move.fromPeice;
+        this.board[move.fromY][move.fromX] = null;
+        this.moves[this.currentMove] = move;
+        this.currentMove = this.currentMove + 1;
+    }
+
+    private renderBoard() {
         this.host.innerHTML = "";
         for (let y = 0; y != this.board.length; y++) {
             const row = document.createElement('div');
@@ -28,32 +82,8 @@ export class ChessBoard extends HTMLElement {
                 const col = this.createColoumnElement(x, y);
                 row.append(col);
             }
-            this.host.append(row);
+            this.host.append(row)
         }
-    }
-
-    back(): void {
-        throw "unimplemented";
-    }
-
-    forward(): void {
-        throw "unimplemented";
-    }
-
-    makeMove(move: ChessMove): void {
-        if (this.isValidMove()) {
-            this.board[move.toY][move.toX] = this.board[move.fromY][move.fromX];
-            this.board[move.fromY][move.fromX] = null;
-        }
-        this.renderBoard();
-    }
-
-    loadPgn(): void {
-        throw "unimplemented";
-    }
-
-    loadFEN(): void {
-        throw "unimplemented";
     }
 
     private isValidMove(): boolean {
@@ -147,16 +177,23 @@ export class ChessBoard extends HTMLElement {
             default:
                 throw "unsupported type";
         }
+
         img.ondragend = ((event: DragEvent) => {
             let targetElement: HTMLElement = this.shadowRoot!.elementFromPoint(event.clientX, event.clientY) as HTMLElement;
             if (!targetElement || !targetElement.dataset.x || !targetElement.dataset.y) {
                 throw "Not on board";
             }
+            let fromX = +(img.dataset.x as string);
+            let fromY = +(img.dataset.y as string);
+            let toX = +(targetElement.dataset.x as string);
+            let toY = +(targetElement.dataset.y as string);
             this.makeMove({
-                fromX: +(img.dataset.x as string),
-                fromY: +(img.dataset.y as string),
-                toX: +targetElement.dataset.x,
-                toY: +targetElement.dataset.y
+                fromX: fromX,
+                fromY: fromY,
+                toX: toX,
+                toY: toY,
+                fromPeice: this.board[fromY][fromX],
+                toPeice: this.board[toY][toX]
             });
         })
         return img;

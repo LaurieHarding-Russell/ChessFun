@@ -9,7 +9,8 @@ exports_files(
     [
         "index.html",
         "chess-board/chess-board.component.css",
-        "base.css"
+        "base.css",
+        "util.css"
     ],
     visibility = ["//visibility:public"]
 )
