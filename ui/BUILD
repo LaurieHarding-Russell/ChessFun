@@ -8,8 +8,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_binary")
 exports_files(
     [
         "index.html",
-        "chess-board.html",
-        "chess-board.css",
+        "chess-board/chess-board.component.css",
         "base.css"
     ],
     visibility = ["//visibility:public"]

@@ -48,10 +48,10 @@
 
 
 /* FIXME, there must be a better to change an svg images colour */
-span[data-side="white"] img {
+img[data-side="white"] {
     
 }
 
-span[data-side="black"] img {
+img[data-side="black"] {
     filter: invert(1);
 }

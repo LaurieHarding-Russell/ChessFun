@@ -52,7 +52,7 @@ filegroup(
     name = "styles",
     srcs = [
         "base.css",
-        "chess-board.css"
+        "chess-board.component.css"
     ],
     visibility = ["//visibility:public"],
 )
@@ -82,6 +82,6 @@ copy_file(
 # FIXME, make generic rule for all css file copying.
 copy_file(
     name = "chessBoardCss",
-    src = "//ui:chess-board.css",
-    out = "chess-board.css"
+    src = "//ui:chess-board/chess-board.component.css",
+    out = "chess-board.component.css"
 )

@@ -23,3 +23,10 @@ export class Piece {
         this.side = side;
     }
 }
+
+export interface ChessMove {
+    fromX: number;
+    fromY: number;
+    toX: number;
+    toY: number;
+}
