@@ -139,16 +139,22 @@ export class ChessBoard extends HTMLElement {
 
     private createPeiceElement(x: number, y: number) {
         let img: HTMLImageElement = document.createElement('img');
-
+        img.setAttribute('draggable', "true");
+        img.setAttribute('data-x', x.toString());
+        img.setAttribute('data-y', y.toString());
+        
         if (this.board[y][x]!.side == Side.WHITE) {
             img.setAttribute('data-side', "white");
         } else {
             img.setAttribute('data-side', "black");
         }
 
-        img.setAttribute('draggable', "true");
-        img.setAttribute('data-x', x.toString());
-        img.setAttribute('data-y', y.toString());
+        this.setPieceElementImage(img, x, y);
+        img.ondragend = this.moveHandler;
+        return img;
+    }
+
+    setPieceElementImage(img: HTMLImageElement, x: number, y: number) {
         switch(this.board[y][x]!.type) {
             case PieceType.POND:
                 img.setAttribute('src', "resources/pond.svg");
@@ -177,26 +183,25 @@ export class ChessBoard extends HTMLElement {
             default:
                 throw "unsupported type";
         }
-
-        img.ondragend = ((event: DragEvent) => {
-            let targetElement: HTMLElement = this.shadowRoot!.elementFromPoint(event.clientX, event.clientY) as HTMLElement;
-            if (!targetElement || !targetElement.dataset.x || !targetElement.dataset.y) {
-                throw "Not on board";
-            }
-            let fromX = +(img.dataset.x as string);
-            let fromY = +(img.dataset.y as string);
-            let toX = +(targetElement.dataset.x as string);
-            let toY = +(targetElement.dataset.y as string);
-            this.makeMove({
-                fromX: fromX,
-                fromY: fromY,
-                toX: toX,
-                toY: toY,
-                fromPeice: this.board[fromY][fromX],
-                toPeice: this.board[toY][toX]
-            });
-        })
-        return img;
     }
+
+    private moveHandler = ((event: DragEvent) => {
+        let targetElement: HTMLElement = this.shadowRoot!.elementFromPoint(event.clientX, event.clientY) as HTMLElement;
+        if (!targetElement || !targetElement.dataset.x || !targetElement.dataset.y) {
+            throw "Not on board";
+        }
+        let fromX = +((event.target as HTMLImageElement).dataset.x as string);
+        let fromY = +((event.target as HTMLImageElement).dataset.y as string);
+        let toX = +(targetElement.dataset.x as string);
+        let toY = +(targetElement.dataset.y as string);
+        this.makeMove({
+            fromX: fromX,
+            fromY: fromY,
+            toX: toX,
+            toY: toY,
+            fromPeice: this.board[fromY][fromX],
+            toPeice: this.board[toY][toX]
+        });
+    })
 }
 
