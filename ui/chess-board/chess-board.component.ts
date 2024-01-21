@@ -137,7 +137,7 @@ export class ChessBoard extends HTMLElement {
         return col;
     }
 
-    private createPeiceElement(x: number, y: number) {
+    private createPeiceElement(x: number, y: number): HTMLImageElement {
         let img: HTMLImageElement = document.createElement('img');
         img.setAttribute('draggable', "true");
         img.setAttribute('data-x', x.toString());
@@ -154,7 +154,7 @@ export class ChessBoard extends HTMLElement {
         return img;
     }
 
-    setPieceElementImage(img: HTMLImageElement, x: number, y: number) {
+    setPieceElementImage(img: HTMLImageElement, x: number, y: number): void {
         switch(this.board[y][x]!.type) {
             case PieceType.POND:
                 img.setAttribute('src', "resources/pond.svg");
