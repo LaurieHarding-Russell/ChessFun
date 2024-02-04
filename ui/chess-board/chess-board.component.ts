@@ -1,6 +1,10 @@
 import { generatePiecesFromString } from "./chess.util";
 import { Piece, PieceType, Side, ChessMove } from "./types";
 
+// fixme ide. index.html loading it.
+import isValidMove from "../rustChess/chessLibraryWasm";
+
+
 export class ChessBoard extends HTMLElement {
     private board: Array<Array<Piece|null>> = [];
     private moves: Array<ChessMove> = [];
@@ -8,6 +12,8 @@ export class ChessBoard extends HTMLElement {
 
     public moveNumber: number = 0;
     public currentMove: number = 0;
+
+    chessLibrary: any;
 
     constructor() {
         super();
@@ -43,10 +49,10 @@ export class ChessBoard extends HTMLElement {
     }
 
     public makeMove(move: ChessMove): void {
-        if (this.isValidMove()) {
+        // if (isValidMove()) {
             this.moveForward(move);
             this.moveNumber = this.currentMove;
-        }
+        // }
         this.renderBoard();
     }
 
@@ -84,11 +90,6 @@ export class ChessBoard extends HTMLElement {
             }
             this.host.append(row)
         }
-    }
-
-    private isValidMove(): boolean {
-        // FIXME, rust web assembly?
-        return true;
     }
 
     // FIX ME, look at existing notation like EPD PGN FEN.

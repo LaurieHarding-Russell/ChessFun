@@ -23,6 +23,7 @@ ts_project(
     deps = [
         "//:node_modules/tslib",
         "//:node_modules/rxjs",
+        "//rustChess:chessLibraryWasm",
     ],
     visibility = ["//visibility:public"],
 )
