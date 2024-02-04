@@ -2,7 +2,7 @@ import { generatePiecesFromString } from "./chess.util";
 import { Piece, PieceType, Side, ChessMove } from "./types";
 
 // fixme ide. index.html loading it.
-import isValidMove from "../rustChess/chessLibraryWasm";
+// import isValidMove from "../rustChess/chessLibraryWasm";
 
 
 export class ChessBoard extends HTMLElement {
