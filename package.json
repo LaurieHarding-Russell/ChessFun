@@ -1,5 +1,6 @@
 {
     "private": true,
+    "type":"module",
     "devDependencies": {
         "@types/node": "16.18.11",
         "rollup": "2.42.0",

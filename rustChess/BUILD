@@ -4,7 +4,8 @@ load("@rules_rust//wasm_bindgen/rules_js:defs.bzl", "js_rust_wasm_bindgen")
 
 rust_shared_library(
     name = "chessLibrary",
-    srcs = ["Chess.rs"],
+    srcs = glob(["*.rs"]),
+    crate_root = "chess.rs",
     edition = "2018",
     deps = [
         "@rules_rust//wasm_bindgen/3rdparty:wasm_bindgen",
@@ -13,7 +14,7 @@ rust_shared_library(
 
 js_rust_wasm_bindgen(
     name = "chessLibraryWasm",
-    target = "web",
+    target = "nodejs",
     wasm_file = ":chessLibrary",
     visibility = ["//visibility:public"],
 )
@@ -21,5 +22,5 @@ js_rust_wasm_bindgen(
 js_test(
     name = "chessJsTest",
     data = [":chessLibraryWasm"],
-    entry_point = "chess.test.js",
+    entry_point = "chess.test.mjs",
 )
