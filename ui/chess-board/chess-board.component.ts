@@ -1,9 +1,10 @@
 import { generatePiecesFromString } from "./chess.util";
 import { Piece, PieceType, Side, ChessMove } from "./types";
 
-// fixme ide. index.html loading it.
-// import isValidMove from "../rustChess/chessLibraryWasm";
+// fixme, npm package so that the ide has a fighting chance? ln -s bazel-bin/node_modules node_modules
+import {isValidMove} from "@chess/chessLibraryWasm";
 
+// import isValidMove from "@chess/chessLibraryWasm";
 
 export class ChessBoard extends HTMLElement {
     private board: Array<Array<Piece|null>> = [];
@@ -49,7 +50,7 @@ export class ChessBoard extends HTMLElement {
     }
 
     public makeMove(move: ChessMove): void {
-        // if (isValidMove()) {
+        // if (isValidMove(true, null)) {
             this.moveForward(move);
             this.moveNumber = this.currentMove;
         // }

@@ -1,6 +1,7 @@
 load("@aspect_rules_js//js:defs.bzl", "js_library", "js_test")
 load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_shared_library")
 load("@rules_rust//wasm_bindgen/rules_js:defs.bzl", "js_rust_wasm_bindgen")
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
 
 rust_shared_library(
     name = "chessLibrary",
@@ -14,7 +15,7 @@ rust_shared_library(
 
 js_rust_wasm_bindgen(
     name = "chessLibraryWasm",
-    target = "nodejs",
+    target = "web",
     wasm_file = ":chessLibrary",
     visibility = ["//visibility:public"],
 )
@@ -23,4 +24,16 @@ js_test(
     name = "chessJsTest",
     data = [":chessLibraryWasm"],
     entry_point = "chess.test.mjs",
+)
+
+
+npm_package(
+    name = "chess",
+    srcs = [
+        ":chessLibraryWasm",
+        "package.json"
+    ],
+    include_runfiles = False,
+    package = "@chess",
+    visibility = ["//visibility:public"],
 )

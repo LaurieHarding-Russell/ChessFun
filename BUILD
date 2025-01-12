@@ -9,8 +9,8 @@ load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 
 # TypeScript and other node programs beneath bazel-bin/examples are able to resolve its location.
 npm_link_package(
-    name = "node_modules/@pumkinspicegames/graphics_engine",
-    src = "//game-front-end/graphics-engine:pumpkinSpiceEngine",
+    name = "node_modules/@chess",
+    src = "//rustChess:chess",
     # root_package = "",
     visibility = ["//:__subpackages__"],
 )
@@ -26,7 +26,7 @@ ts_config(
 
 js_binary(
     name = "chess",
-    entry_point = "server.js",
+    entry_point = "server.cjs",
     data = [
         "//:node_modules/express",
         ":bundle",
