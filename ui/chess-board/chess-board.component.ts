@@ -2,9 +2,7 @@ import { generatePiecesFromString } from "./chess.util";
 import { Piece, PieceType, Side, ChessMove } from "./types";
 
 // fixme, npm package so that the ide has a fighting chance? ln -s bazel-bin/node_modules node_modules
-import {isValidMove} from "@chess/chessLibraryWasm";
-
-// import isValidMove from "@chess/chessLibraryWasm";
+import {isValidMove, initSync} from "@chess/chessLibraryWasm";
 
 export class ChessBoard extends HTMLElement {
     private board: Array<Array<Piece|null>> = [];
@@ -15,17 +13,31 @@ export class ChessBoard extends HTMLElement {
     public currentMove: number = 0;
 
     chessLibrary: any;
+    
+    loading: Promise<void | Response> | null = null;
 
     constructor() {
         super();
-        
+
         // to shadowDom or not to shadowDom...
         let shadow = this.attachShadow({mode: 'open'});
-
-        this.host.setAttribute('class','board');
-
-        this.createStandardBoard();
         this.setStyle();
+        // this.host.setAttribute('class', "board")
+        console.log("this.host.classList", this.host.classList)
+        this.host.classList.add('board');
+        this.host.classList.add('loading');
+
+        this.loading = fetch("./node_modules/@chess/chessLibraryWasm_bg.wasm")
+                .then((response) => response.arrayBuffer())
+                .then((bytes) => {
+                    initSync(bytes);
+                    this.initialize();
+                });
+    }
+
+    private initialize() {
+        this.host.classList.remove('loading');
+        this.createStandardBoard();
         this.renderBoard(); // FIXME, think about what should call this.
     }
 
@@ -50,10 +62,10 @@ export class ChessBoard extends HTMLElement {
     }
 
     public makeMove(move: ChessMove): void {
-        // if (isValidMove(true, null)) {
+        if (isValidMove(true, null)) {
             this.moveForward(move);
             this.moveNumber = this.currentMove;
-        // }
+        }
         this.renderBoard();
     }
 

@@ -32,6 +32,7 @@ js_binary(
         ":bundle",
         ":html",
         ":styles",
+        "//:node_modules/@chess",
         "//resources:wrappedSvgs"
     ]
 )
@@ -66,7 +67,6 @@ filegroup(
     ],
     visibility = ["//visibility:public"],
 )
-
 
 copy_file(
     name = "indexHtml",

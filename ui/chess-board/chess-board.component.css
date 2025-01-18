@@ -13,6 +13,21 @@
     width: fit-content;
 }
 
+.board.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 400px;
+    animation: pulse;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+div.loading::after {
+    content: "Loading...";
+
+}
+
 .row {
     display: flex;
     margin:0;
@@ -54,4 +69,22 @@ img[data-side="white"] {
 
 img[data-side="black"] {
     filter: invert(1);
+}
+
+
+@keyframes pulse {
+    0% {
+        font-size: 40px;
+        color: #01010125;
+    }
+
+    70% {
+        font-size: 50px;
+        color: #010101ff;
+    }
+
+    100% {
+        font-size: 40px;
+        color: #01010125;
+    }
 }
